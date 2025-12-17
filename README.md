@@ -110,5 +110,17 @@ cd src/mlc_llm
 
 These scripts together reproduce our experiments on **quantization-aware deployment of LLMs** using **MLC-LLM + TVM**.
 
+## 📈 Example Result: Total GPU Memory vs Context Window
+
+This figure shows **total GPU memory usage vs context window size** for different quantized versions of `Llama-3-8B-Instruct` compiled with MLC-LLM:
+
+![Total GPU memory vs context window (different quantization)](src/mlc_llm/dailt_workplace/dse/mem_plots/kv_cache_quant_compare_total.png)
+
+Key observations:
+- **Memory grows roughly linearly with the context window size** for all quantization schemes, as expected from KV cache scaling.
+- The **FP16-like baseline (`q0f16`) consumes about 2–3× more total GPU memory** than the 3–4 bit quantized variants across all context lengths.
+- Among quantized models, **`q3f16_1` uses the least memory**, while `q4f16_1` and `q4f32_1` trade slightly higher memory for better numerical precision.
+- These results highlight that **aggressive KV/cache quantization can significantly reduce memory usage** and enable much longer context windows under the same GPU memory budget.
+
 ## 📜 License
 This project is released under the MIT License.
