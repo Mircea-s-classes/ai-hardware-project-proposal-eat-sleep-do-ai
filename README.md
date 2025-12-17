@@ -110,7 +110,7 @@ cd src/mlc_llm
 
 These scripts together reproduce our experiments on **quantization-aware deployment of LLMs** using **MLC-LLM + TVM**.
 
-## 📈 Example Result: Total GPU Memory vs Context Window
+## 📈 Example Result 1: Total GPU Memory vs Context Window
 
 This figure shows **total GPU memory usage vs context window size** for different quantized versions of `Llama-3-8B-Instruct` compiled with MLC-LLM:
 
@@ -121,6 +121,18 @@ Key observations:
 - The **FP16-like baseline (`q0f16`) consumes about 2–3× more total GPU memory** than the 3–4 bit quantized variants across all context lengths.
 - Among quantized models, **`q3f16_1` uses the least memory**, while `q4f16_1` and `q4f32_1` trade slightly higher memory for better numerical precision.
 - These results highlight that **aggressive KV/cache quantization can significantly reduce memory usage** and enable much longer context windows under the same GPU memory budget.
+
+## ⏱️ Example Result 2: End-to-End Latency vs Sliding Window Size
+
+We also evaluate **end-to-end latency** as we vary the **sliding window size** and **attention sink size** under different context windows and quantization schemes:
+
+![End-to-end latency vs sliding_window_size (different quantization, varying sink)](src/mlc_llm/dailt_workplace/dse/mem_plots/latency_e2e_vs_sliding.png)
+
+Key observations:
+- Across all three context windows (4096 / 8192 / 16384), **end-to-end latency is relatively flat** as we increase the sliding window size, indicating that the engine amortizes the KV cache reuse efficiently.
+- For a fixed context and sliding window, **more aggressive quantization (e.g., `q3f16_1`, `q4f16_1`) slightly reduces latency** compared to the FP16-like baseline, consistent with lower memory traffic.
+- Changing the **attention sink size** (0 → 256) has only a modest impact on end-to-end latency in this setting, but it does change the effective memory footprint and can matter at larger batch sizes.
+- Overall, the results suggest that **we can tune sliding window and sink size to save memory without significantly hurting end-to-end latency**, especially when combined with low-bit quantization.
 
 ## 📜 License
 This project is released under the MIT License.
