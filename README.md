@@ -148,3 +148,10 @@ Key observations:
 
 ## 📜 License
 This project is released under the MIT License.
+
+## 🔮 Next Steps & Future Directions
+
+In future work, we plan to:
+- **Broaden model and quantization coverage** by including more LLM sizes and additional KV/weight quantization formats, and comparing their impact on memory, throughput, latency, and PPL.
+- **Explore richer KV cache design spaces**, including different batch sizes, concurrent request patterns, and (if time permits) multi-GPU settings.
+- **Improve reproducibility and usability** by adding more automated scripts and cleaner interfaces so that others can easily extend our DSE and visualization pipeline.
