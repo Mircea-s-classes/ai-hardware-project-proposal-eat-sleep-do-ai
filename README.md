@@ -134,5 +134,17 @@ Key observations:
 - Changing the **attention sink size** (0 → 256) has only a modest impact on end-to-end latency in this setting, but it does change the effective memory footprint and can matter at larger batch sizes.
 - Overall, the results suggest that **we can tune sliding window and sink size to save memory without significantly hurting end-to-end latency**, especially when combined with low-bit quantization.
 
+## 🧠 Example Result 3: KV Cache Memory vs Context Window
+
+In addition to total memory, we also isolate **KV cache memory vs context window size** for different quantization schemes:
+
+![KV cache memory vs context window (different quantization)](src/mlc_llm/dailt_workplace/dse/mem_plots/kv_cache_quant_compare.png)
+
+Key observations:
+- KV cache memory scales **almost perfectly linearly** with the context window, confirming the expected \\(O(T)\\) dependence on sequence length.
+- Compared to the FP16-like baseline (`q0f16`), **4-bit KV quantization (`q4f16_1`, `q4f32_1`) roughly halves the KV cache memory** at the same context length.
+- The gap between different 4-bit formats (e.g., `q4f16_1` vs `q4f32_1`) is relatively small, suggesting we can often choose the numerically more stable format without a huge KV memory penalty.
+- Combining these KV-specific savings with overall model weight quantization is critical to **fit long-context LLMs on a single GPU** while keeping latency acceptable.
+
 ## 📜 License
 This project is released under the MIT License.
