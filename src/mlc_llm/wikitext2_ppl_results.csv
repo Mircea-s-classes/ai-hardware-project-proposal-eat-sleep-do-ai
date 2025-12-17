@@ -1,0 +1,2 @@
+mlc_model,hf_model,device,max_length,stride,split,load_in_4bit,load_in_8bit,fake_q3bit,ppl
+HF://mlc-ai/Llama-3-8B-Instruct-q0f16-MLC,meta-llama/Meta-Llama-3-8B,cuda,2048,512,test,0,0,0,5.463742232026599
